@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youfan.bussiness.mapper.YoufanApplyRepairMapper">
+    
+    <resultMap type="YoufanApplyRepair" id="YoufanApplyRepairResult">
+        <result property="id"    column="id"    />
+        <result property="applyDeptName"    column="apply_dept_name"    />
+        <result property="applyUser"    column="apply_user"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="orderAllotuser"    column="order_allotuser"    />
+        <result property="orderExecutor"    column="order_executor"    />
+        <result property="handleResult"    column="handle_result"    />
+        <result property="checkResult"    column="check_result"    />
+        <result property="applyTime"    column="apply_time"    />
+        <result property="executeTime"    column="execute_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectYoufanApplyRepairVo">
+        select id, apply_dept_name, apply_user, order_num, order_allotuser, order_executor, handle_result, check_result, apply_time, execute_time, create_by, create_time, update_by, update_time, remark from youfan_apply_repair
+    </sql>
+
+    <select id="selectYoufanApplyRepairList" parameterType="YoufanApplyRepair" resultMap="YoufanApplyRepairResult">
+        <include refid="selectYoufanApplyRepairVo"/>
+        <where>  
+            <if test="applyDeptName != null  and applyDeptName != ''"> and apply_dept_name like concat('%', #{applyDeptName}, '%')</if>
+            <if test="applyUser != null  and applyUser != ''"> and apply_user = #{applyUser}</if>
+            <if test="orderNum != null  and orderNum != ''"> and order_num = #{orderNum}</if>
+            <if test="orderAllotuser != null  and orderAllotuser != ''"> and order_allotuser = #{orderAllotuser}</if>
+            <if test="orderExecutor != null  and orderExecutor != ''"> and order_executor = #{orderExecutor}</if>
+            <if test="handleResult != null  and handleResult != ''"> and handle_result = #{handleResult}</if>
+            <if test="checkResult != null  and checkResult != ''"> and check_result = #{checkResult}</if>
+            <if test="applyTime != null "> and apply_time = #{applyTime}</if>
+            <if test="executeTime != null "> and execute_time = #{executeTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectYoufanApplyRepairById" parameterType="Long" resultMap="YoufanApplyRepairResult">
+        <include refid="selectYoufanApplyRepairVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertYoufanApplyRepair" parameterType="YoufanApplyRepair" useGeneratedKeys="true" keyProperty="id">
+        insert into youfan_apply_repair
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="applyDeptName != null and applyDeptName != ''">apply_dept_name,</if>
+            <if test="applyUser != null and applyUser != ''">apply_user,</if>
+            <if test="orderNum != null and orderNum != ''">order_num,</if>
+            <if test="orderAllotuser != null and orderAllotuser != ''">order_allotuser,</if>
+            <if test="orderExecutor != null and orderExecutor != ''">order_executor,</if>
+            <if test="handleResult != null and handleResult != ''">handle_result,</if>
+            <if test="checkResult != null and checkResult != ''">check_result,</if>
+            <if test="applyTime != null">apply_time,</if>
+            <if test="executeTime != null">execute_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="applyDeptName != null and applyDeptName != ''">#{applyDeptName},</if>
+            <if test="applyUser != null and applyUser != ''">#{applyUser},</if>
+            <if test="orderNum != null and orderNum != ''">#{orderNum},</if>
+            <if test="orderAllotuser != null and orderAllotuser != ''">#{orderAllotuser},</if>
+            <if test="orderExecutor != null and orderExecutor != ''">#{orderExecutor},</if>
+            <if test="handleResult != null and handleResult != ''">#{handleResult},</if>
+            <if test="checkResult != null and checkResult != ''">#{checkResult},</if>
+            <if test="applyTime != null">#{applyTime},</if>
+            <if test="executeTime != null">#{executeTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateYoufanApplyRepair" parameterType="YoufanApplyRepair">
+        update youfan_apply_repair
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="applyDeptName != null and applyDeptName != ''">apply_dept_name = #{applyDeptName},</if>
+            <if test="applyUser != null and applyUser != ''">apply_user = #{applyUser},</if>
+            <if test="orderNum != null and orderNum != ''">order_num = #{orderNum},</if>
+            <if test="orderAllotuser != null and orderAllotuser != ''">order_allotuser = #{orderAllotuser},</if>
+            <if test="orderExecutor != null and orderExecutor != ''">order_executor = #{orderExecutor},</if>
+            <if test="handleResult != null and handleResult != ''">handle_result = #{handleResult},</if>
+            <if test="checkResult != null and checkResult != ''">check_result = #{checkResult},</if>
+            <if test="applyTime != null">apply_time = #{applyTime},</if>
+            <if test="executeTime != null">execute_time = #{executeTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteYoufanApplyRepairById" parameterType="Long">
+        delete from youfan_apply_repair where id = #{id}
+    </delete>
+
+    <delete id="deleteYoufanApplyRepairByIds" parameterType="String">
+        delete from youfan_apply_repair where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

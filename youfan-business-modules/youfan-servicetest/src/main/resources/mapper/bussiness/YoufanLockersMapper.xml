@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youfan.bussiness.mapper.YoufanLockersMapper">
+    
+    <resultMap type="YoufanLockers" id="YoufanLockersResult">
+        <result property="id"    column="id"    />
+        <result property="lockersCode"    column="lockers_code"    />
+        <result property="lockersArea"    column="lockers_area"    />
+        <result property="lockersCount"    column="lockers_count"    />
+        <result property="lockersSurplus"    column="lockers_surplus"    />
+    </resultMap>
+
+    <sql id="selectYoufanLockersVo">
+        select id, lockers_code, lockers_area, lockers_count, lockers_surplus from youfan_lockers
+    </sql>
+
+    <select id="selectYoufanLockersList" parameterType="YoufanLockers" resultMap="YoufanLockersResult">
+        <include refid="selectYoufanLockersVo"/>
+        <where>  
+            <if test="lockersCode != null  and lockersCode != '' ">  lockers_code =#{lockersCode}</if>
+        </where>
+    </select>
+    
+    <select id="selectYoufanLockersById" parameterType="Long" resultMap="YoufanLockersResult">
+        <include refid="selectYoufanLockersVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertYoufanLockers" parameterType="YoufanLockers" useGeneratedKeys="true" keyProperty="id">
+        insert into youfan_lockers
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="lockersCode != null and lockersCode != ''">lockers_code,</if>
+            <if test="lockersArea != null and lockersArea != ''">lockers_area,</if>
+            <if test="lockersCount != null and lockersCount != ''">lockers_count,</if>
+            <if test="lockersSurplus != null and lockersSurplus != ''">lockers_surplus,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="lockersCode != null and lockersCode != ''">#{lockersCode},</if>
+            <if test="lockersArea != null and lockersArea != ''">#{lockersArea},</if>
+            <if test="lockersCount != null and lockersCount != ''">#{lockersCount},</if>
+            <if test="lockersSurplus != null and lockersSurplus != ''">#{lockersSurplus},</if>
+         </trim>
+    </insert>
+
+    <update id="updateYoufanLockers" parameterType="YoufanLockers">
+        update youfan_lockers
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="lockersArea != null and lockersArea != ''">lockers_area = #{lockersArea},</if>
+            <if test="lockersCount != null and lockersCount != ''">lockers_count = #{lockersCount},</if>
+            <if test="lockersSurplus != null and lockersSurplus != ''">lockers_surplus = #{lockersSurplus},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteYoufanLockersById" parameterType="Long">
+        delete from youfan_lockers where id = #{id}
+    </delete>
+
+    <delete id="deleteYoufanLockersByIds" parameterType="String">
+        delete from youfan_lockers where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

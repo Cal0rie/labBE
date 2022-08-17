@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youfan.bussiness.mapper.YoufanPatrolMapper">
+    
+    <resultMap type="YoufanPatrol" id="YoufanPatrolResult">
+        <result property="id"    column="id"    />
+        <result property="patrolUser"    column="patrol_user"    />
+        <result property="patrolPlan"    column="patrol_plan"    />
+        <result property="patrolTime"    column="patrol_time"    />
+        <result property="patrolStatus"    column="patrol_status"    />
+        <result property="patrolResult"    column="patrol_result"    />
+        <result property="patrolContent"    column="patrol_content"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectYoufanPatrolVo">
+        select id, patrol_user, patrol_plan, patrol_time, patrol_status, patrol_result, patrol_content, create_by, create_time, update_by, update_time, remark from youfan_patrol
+    </sql>
+
+    <select id="selectYoufanPatrolList" parameterType="YoufanPatrol" resultMap="YoufanPatrolResult">
+        <include refid="selectYoufanPatrolVo"/>
+        <where>  
+            <if test="patrolUser != null  and patrolUser != ''"> and patrol_user = #{patrolUser}</if>
+            <if test="patrolPlan != null  and patrolPlan != ''"> and patrol_plan = #{patrolPlan}</if>
+            <if test="patrolTime != null "> and patrol_time = #{patrolTime}</if>
+            <if test="patrolStatus != null  and patrolStatus != ''"> and patrol_status = #{patrolStatus}</if>
+            <if test="patrolResult != null  and patrolResult != ''"> and patrol_result = #{patrolResult}</if>
+            <if test="patrolContent != null  and patrolContent != ''"> and patrol_content like concat('%', #{patrolContent}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectYoufanPatrolById" parameterType="Long" resultMap="YoufanPatrolResult">
+        <include refid="selectYoufanPatrolVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertYoufanPatrol" parameterType="YoufanPatrol" useGeneratedKeys="true" keyProperty="id">
+        insert into youfan_patrol
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="patrolUser != null and patrolUser != ''">patrol_user,</if>
+            <if test="patrolPlan != null and patrolPlan != ''">patrol_plan,</if>
+            <if test="patrolTime != null">patrol_time,</if>
+            <if test="patrolStatus != null and patrolStatus != ''">patrol_status,</if>
+            <if test="patrolResult != null and patrolResult != ''">patrol_result,</if>
+            <if test="patrolContent != null and patrolContent != ''">patrol_content,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="patrolUser != null and patrolUser != ''">#{patrolUser},</if>
+            <if test="patrolPlan != null and patrolPlan != ''">#{patrolPlan},</if>
+            <if test="patrolTime != null">#{patrolTime},</if>
+            <if test="patrolStatus != null and patrolStatus != ''">#{patrolStatus},</if>
+            <if test="patrolResult != null and patrolResult != ''">#{patrolResult},</if>
+            <if test="patrolContent != null and patrolContent != ''">#{patrolContent},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateYoufanPatrol" parameterType="YoufanPatrol">
+        update youfan_patrol
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="patrolUser != null and patrolUser != ''">patrol_user = #{patrolUser},</if>
+            <if test="patrolPlan != null and patrolPlan != ''">patrol_plan = #{patrolPlan},</if>
+            <if test="patrolTime != null">patrol_time = #{patrolTime},</if>
+            <if test="patrolStatus != null and patrolStatus != ''">patrol_status = #{patrolStatus},</if>
+            <if test="patrolResult != null and patrolResult != ''">patrol_result = #{patrolResult},</if>
+            <if test="patrolContent != null and patrolContent != ''">patrol_content = #{patrolContent},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteYoufanPatrolById" parameterType="Long">
+        delete from youfan_patrol where id = #{id}
+    </delete>
+
+    <delete id="deleteYoufanPatrolByIds" parameterType="String">
+        delete from youfan_patrol where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

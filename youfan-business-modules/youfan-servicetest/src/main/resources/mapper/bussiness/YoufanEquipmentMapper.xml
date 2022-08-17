@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youfan.bussiness.mapper.YoufanEquipmentMapper">
+    
+    <resultMap type="YoufanEquipment" id="YoufanEquipmentResult">
+        <result property="id"    column="id"    />
+        <result property="equipmentName"    column="equipment_name"    />
+        <result property="equipmentNum"    column="equipment_num"    />
+        <result property="equipmentStatus"    column="equipment_status"    />
+        <result property="equipmentDept"    column="equipment_dept"    />
+        <result property="supplierTime"    column="supplier_time"    />
+        <result property="productionTime"    column="production_time"    />
+        <result property="equipmentPic"    column="equipment_pic"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="useTime"    column="use_time"    />
+        <result property="useTimes"    column="use_times"    />
+        <result property="lockersCode" column="lockers_code"/>
+    </resultMap>
+
+    <sql id="selectYoufanEquipmentVo">
+        select id, equipment_name, equipment_num, equipment_status, equipment_dept, supplier_time, production_time, equipment_pic, create_by, create_time, update_by, update_time, remark,use_time,use_times,lockers_code from youfan_equipment
+    </sql>
+
+    <select id="selectYoufanEquipmentList" parameterType="YoufanEquipment" resultMap="YoufanEquipmentResult">
+        <include refid="selectYoufanEquipmentVo"/>
+        <where>
+            equipment_status IN ('0','1','2')
+            <if test="id != null  and id != ''"> and id = #{id}</if>
+            <if test="equipmentName != null  and equipmentName != ''"> and equipment_name like concat('%', #{equipmentName}, '%')</if>
+            <if test="equipmentNum != null  and equipmentNum != ''"> and equipment_num = #{equipmentNum}</if>
+            <if test="equipmentStatus != null  and equipmentStatus != ''"> and equipment_status = #{equipmentStatus}</if>
+            <if test="equipmentDept != null  and equipmentDept != ''"> and equipment_dept = #{equipmentDept}</if>
+            <if test="supplierTime != null "> and supplier_time = #{supplierTime}</if>
+            <if test="productionTime != null "> and production_time = #{productionTime}</if>
+            <if test="remark != null "> and remark = #{remark}</if>
+            <if test="equipmentPic != null  and equipmentPic != ''"> and equipment_pic = #{equipmentPic}</if>
+        </where>
+    </select>
+    
+    <select id="selectYoufanEquipmentById" parameterType="Long" resultMap="YoufanEquipmentResult">
+        <include refid="selectYoufanEquipmentVo"/>
+        where id = #{id}
+    </select>
+
+
+    <select id="selectUseEquipmentList"  resultMap="YoufanEquipmentResult">
+        SELECT * FROM youfan_equipment where equipment_status=1 and  DATE_SUB(CURDATE(), INTERVAL 3 DAY) <![CDATA[ <= ]]> date(use_time)
+    </select>
+
+
+        
+    <insert id="insertYoufanEquipment" parameterType="YoufanEquipment" useGeneratedKeys="true" keyProperty="id">
+        insert into youfan_equipment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="equipmentName != null and equipmentName != ''">equipment_name,</if>
+            <if test="equipmentNum != null and equipmentNum != ''">equipment_num,</if>
+            <if test="equipmentStatus != null and equipmentStatus != ''">equipment_status,</if>
+            <if test="equipmentDept != null and equipmentDept != ''">equipment_dept,</if>
+            <if test="supplierTime != null">supplier_time,</if>
+            <if test="productionTime != null">production_time,</if>
+            <if test="equipmentPic != null and equipmentPic != ''">equipment_pic,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="useTime != null">use_time,</if>
+            <if test="useTimes != null">use_times,</if>
+            <if test="lockersCode != null">lockers_code,</if>
+
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="equipmentName != null and equipmentName != ''">#{equipmentName},</if>
+            <if test="equipmentNum != null and equipmentNum != ''">#{equipmentNum},</if>
+            <if test="equipmentStatus != null and equipmentStatus != ''">#{equipmentStatus},</if>
+            <if test="equipmentDept != null and equipmentDept != ''">#{equipmentDept},</if>
+            <if test="supplierTime != null">#{supplierTime},</if>
+            <if test="productionTime != null">#{productionTime},</if>
+            <if test="equipmentPic != null and equipmentPic != ''">#{equipmentPic},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="useTime != null">#{useTime},</if>
+            <if test="useTimes != null">#{useTimes},</if>
+            <if test="lockersCode != null">#{lockersCode},</if>
+         </trim>
+    </insert>
+
+    <update id="updateYoufanEquipment" parameterType="YoufanEquipment">
+        update youfan_equipment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="equipmentName != null and equipmentName != ''">equipment_name = #{equipmentName},</if>
+            <if test="equipmentNum != null and equipmentNum != ''">equipment_num = #{equipmentNum},</if>
+            <if test="equipmentStatus != null and equipmentStatus != ''">equipment_status = #{equipmentStatus},</if>
+            <if test="equipmentDept != null and equipmentDept != ''">equipment_dept = #{equipmentDept},</if>
+            <if test="supplierTime != null">supplier_time = #{supplierTime},</if>
+            <if test="productionTime != null">production_time = #{productionTime},</if>
+            <if test="equipmentPic != null and equipmentPic != ''">equipment_pic = #{equipmentPic},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="useTime != null">use_time=#{useTime},</if>
+            <if test="useTimes != null">use_times=#{useTimes},</if>
+            <if test="lockersCode != null">lockers_code=#{lockersCode},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+
+    <update id="deleteYoufanEquipmentById" parameterType="Long">
+        update youfan_equipment set equipment_status = 3  where id = #{id}
+    </update>
+
+    <update id="deleteYoufanEquipmentByIds" parameterType="String">
+        update youfan_equipment set equipment_status = 3   where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <!--<delete id="deleteYoufanEquipmentById" parameterType="Long">
+        delete from youfan_equipment where id = #{id}
+    </delete>
+
+    <delete id="deleteYoufanEquipmentByIds" parameterType="String">
+        delete from youfan_equipment where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>-->
+</mapper>

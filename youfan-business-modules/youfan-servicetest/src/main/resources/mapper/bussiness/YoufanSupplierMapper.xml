@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youfan.bussiness.mapper.YoufanSupplierMapper">
+    
+    <resultMap type="YoufanSupplier" id="YoufanSupplierResult">
+        <result property="id"    column="id"    />
+        <result property="supplierName"    column="supplier_name"    />
+        <result property="equipmentName"    column="equipment_name"    />
+        <result property="equipmentNum"    column="equipment_num"    />
+        <result property="applyTime"    column="apply_time"    />
+        <result property="approveTime"    column="approve_time"    />
+        <result property="approveStatus"    column="approve_status"    />
+        <result property="supplierAmount"    column="supplier_amount"    />
+        <result property="supplierPic"    column="supplier_pic"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectYoufanSupplierVo">
+        select id, supplier_name, equipment_name, equipment_num, apply_time, approve_time, approve_status, supplier_amount, supplier_pic, create_by, create_time, update_by, update_time, remark from youfan_supplier
+    </sql>
+
+    <select id="selectYoufanSupplierList" parameterType="YoufanSupplier" resultMap="YoufanSupplierResult">
+        <include refid="selectYoufanSupplierVo"/>
+        <where>  
+            <if test="supplierName != null  and supplierName != ''"> and supplier_name like concat('%', #{supplierName}, '%')</if>
+            <if test="equipmentName != null  and equipmentName != ''"> and equipment_name like concat('%', #{equipmentName}, '%')</if>
+            <if test="equipmentNum != null  and equipmentNum != ''"> and equipment_num = #{equipmentNum}</if>
+            <if test="applyTime != null "> and apply_time = #{applyTime}</if>
+            <if test="approveTime != null "> and approve_time = #{approveTime}</if>
+            <if test="approveStatus != null  and approveStatus != ''"> and approve_status = #{approveStatus}</if>
+            <if test="supplierAmount != null  and supplierAmount != ''"> and supplier_amount = #{supplierAmount}</if>
+            <if test="supplierPic != null  and supplierPic != ''"> and supplier_pic = #{supplierPic}</if>
+        </where>
+    </select>
+    
+    <select id="selectYoufanSupplierById" parameterType="Long" resultMap="YoufanSupplierResult">
+        <include refid="selectYoufanSupplierVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertYoufanSupplier" parameterType="YoufanSupplier" useGeneratedKeys="true" keyProperty="id">
+        insert into youfan_supplier
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="supplierName != null and supplierName != ''">supplier_name,</if>
+            <if test="equipmentName != null and equipmentName != ''">equipment_name,</if>
+            <if test="equipmentNum != null and equipmentNum != ''">equipment_num,</if>
+            <if test="applyTime != null">apply_time,</if>
+            <if test="approveTime != null">approve_time,</if>
+            <if test="approveStatus != null and approveStatus != ''">approve_status,</if>
+            <if test="supplierAmount != null and supplierAmount != ''">supplier_amount,</if>
+            <if test="supplierPic != null and supplierPic != ''">supplier_pic,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="supplierName != null and supplierName != ''">#{supplierName},</if>
+            <if test="equipmentName != null and equipmentName != ''">#{equipmentName},</if>
+            <if test="equipmentNum != null and equipmentNum != ''">#{equipmentNum},</if>
+            <if test="applyTime != null">#{applyTime},</if>
+            <if test="approveTime != null">#{approveTime},</if>
+            <if test="approveStatus != null and approveStatus != ''">#{approveStatus},</if>
+            <if test="supplierAmount != null and supplierAmount != ''">#{supplierAmount},</if>
+            <if test="supplierPic != null and supplierPic != ''">#{supplierPic},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateYoufanSupplier" parameterType="YoufanSupplier">
+        update youfan_supplier
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="supplierName != null and supplierName != ''">supplier_name = #{supplierName},</if>
+            <if test="equipmentName != null and equipmentName != ''">equipment_name = #{equipmentName},</if>
+            <if test="equipmentNum != null and equipmentNum != ''">equipment_num = #{equipmentNum},</if>
+            <if test="applyTime != null">apply_time = #{applyTime},</if>
+            <if test="approveTime != null">approve_time = #{approveTime},</if>
+            <if test="approveStatus != null and approveStatus != ''">approve_status = #{approveStatus},</if>
+            <if test="supplierAmount != null and supplierAmount != ''">supplier_amount = #{supplierAmount},</if>
+            <if test="supplierPic != null and supplierPic != ''">supplier_pic = #{supplierPic},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteYoufanSupplierById" parameterType="Long">
+        delete from youfan_supplier where id = #{id}
+    </delete>
+
+    <delete id="deleteYoufanSupplierByIds" parameterType="String">
+        delete from youfan_supplier where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
